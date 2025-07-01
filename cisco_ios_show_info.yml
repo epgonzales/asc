@@ -1,12 +1,7 @@
 - name: Gather Cisco IOS Version Information
-  hosts: all
-  environment:
-    ANSIBLE_DEPRECATION_WARNINGS: false
-    host_key_checking: false
+  hosts: switches
   gather_facts: false
   connection: network_cli
-  vars:
-    ansible_network_os: cisco.ios.ios
   tasks:
     - name: Execute show version command
       cisco.ios.ios_command:
