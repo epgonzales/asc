@@ -1,6 +1,8 @@
    - name: Get and use Cisco hostname
      hosts: all
-     gather_facts: no
+     gather_facts: false
+     vars:
+       ansible_network_os:ios
      connection: network_cli
      tasks:
        - name: Gather Cisco device information
