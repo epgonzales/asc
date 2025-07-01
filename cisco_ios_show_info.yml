@@ -1,15 +1,16 @@
-   - name: Get and use Cisco hostname
-     hosts: all
-     gather_facts: false
-     vars:
-       ansible_network_os: ios
-     connection: network_cli
-     tasks:
-       - name: Gather Cisco device information
-         cisco.ios.ios_facts:
-           gather_subset: all
-         register: device_info
+- name: Gather Cisco IOS Version Information
+  hosts: cisco_devices
+  gather_facts: false
+  connection: network_cli
+  vars:
+    ansible_network_os: ios
+  tasks:
+    - name: Execute show version command
+      cisco.ios.ios_command:
+        commands:
+          - show version
+      register: version_output
 
-       - name: Display hostname
-         debug:
-           msg: "Hostname: {{ device_info.ansible_facts.hostname }}"
+    - name: Display the output
+      debug:
+        var: version_output.stdout_lines
