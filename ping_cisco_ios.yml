@@ -1,6 +1,6 @@
 - hosts: all
   gather_facts: false
-  connection: ansible.netcommon.network_cli
+  connection: network_cli #ansible.netcommon.network_cli
 
   tasks:
     - name: Run cli_command on Cisco IOS and display results
