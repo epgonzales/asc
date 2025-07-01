@@ -1,5 +1,8 @@
 - name: Gather Cisco IOS Version Information
   hosts: all
+  environment:
+    ANSIBLE_DEPRECATION_WARNINGS: false
+    host_key_checking: false
   gather_facts: false
   connection: network_cli
   vars:
