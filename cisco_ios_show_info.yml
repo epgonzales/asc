@@ -1,5 +1,5 @@
 - name: Gather Cisco IOS Version Information
-  hosts: cisco_devices
+  hosts: all
   gather_facts: false
   connection: network_cli
   vars:
