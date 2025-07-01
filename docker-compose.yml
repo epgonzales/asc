@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: semaphore_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: semaphore_root_password
+      MYSQL_DATABASE: semaphore
+      MYSQL_USER: semaphore
+      MYSQL_PASSWORD: semaphore_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - semaphore_network
+    ports:
+      - "3306:3306"
+
+  semaphore:
+    image: semaphoreui/semaphore:latest
+    container_name: ansible_semaphore
+    depends_on:
+      - mysql
+    environment:
+      SEMAPHORE_DB_DIALECT: mysql
+      SEMAPHORE_DB_HOST: mysql
+      SEMAPHORE_DB_PORT: 3306
+      SEMAPHORE_DB_USER: semaphore
+      SEMAPHORE_DB_PASS: semaphore_password
+      SEMAPHORE_DB_NAME: semaphore
+      SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
+      SEMAPHORE_ADMIN_PASSWORD: admin123
+      SEMAPHORE_ADMIN_NAME: admin
+      SEMAPHORE_ADMIN_EMAIL: admin@example.com
+      SEMAPHORE_ADMIN: admin
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: gs72mPntFATGJs9qK1pQ0XI3MSoUpQOmTxtFuUn4
+      SEMAPHORE_LDAP_ACTIVATED: 'no'
+      SEMAPHORE_PORT: 3000
+      ANSIBLE_HOST_KEY_CHECKING: 'false'
+    volumes:
+      - semaphore_data:/tmp/semaphore
+      - ./ansible:/etc/ansible
+      - ./playbooks:/opt/semaphore/playbooks
+      - ./inventory:/opt/semaphore/inventory
+      - ./keys:/opt/semaphore/keys
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - semaphore_network
+    # Install additional Python packages including paramiko
+    command: >
+      sh -c "
+        apk add --no-cache python3 py3-pip git openssh-client &&
+        pip3 install --upgrade pip &&
+        pip3 install ansible paramiko netmiko napalm jinja2 PyYAML &&
+        ansible-galaxy collection install cisco.ios &&
+        ansible-galaxy collection install community.network &&
+        /usr/bin/semaphore server --config /etc/semaphore/config.json
+      "
+
+  # Optional: Ansible control node with all required packages
+  ansible-control:
+    image: python:3.11-alpine
+    container_name: ansible_control
+    volumes:
+      - ./playbooks:/playbooks
+      - ./inventory:/inventory
+      - ./keys:/keys
+      - ./ansible.cfg:/etc/ansible/ansible.cfg
+    working_dir: /playbooks
+    networks:
+      - semaphore_network
+    command: >
+      sh -c "
+        apk add --no-cache openssh-client git &&
+        pip install ansible paramiko netmiko napalm jinja2 PyYAML &&
+        ansible-galaxy collection install cisco.ios &&
+        ansible-galaxy collection install community.network &&
+        tail -f /dev/null
+      "
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  semaphore_data:
+
+networks:
+  semaphore_network:
+    driver: bridge
