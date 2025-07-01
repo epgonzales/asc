@@ -1,7 +1,9 @@
 - hosts: all
   become: true
   tasks:
+    - name: Reachability (Ping)
+      ping:
     # 1. Accept repository changes explicitly
-    - name: Accept repository changes explicitly
-      shell: apt update #--allow-releaseinfo-change
-      ignore_errors: yes
+    #- name: Accept repository changes explicitly
+      #shell: apt update --allow-releaseinfo-change
+      #ignore_errors: yes
