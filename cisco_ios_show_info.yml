@@ -2,7 +2,7 @@
      hosts: all
      gather_facts: false
      vars:
-       ansible_network_os:ios
+       ansible_network_os: ios
      connection: network_cli
      tasks:
        - name: Gather Cisco device information
