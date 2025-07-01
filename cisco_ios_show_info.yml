@@ -1,0 +1,27 @@
+   ---
+   - name: Get and use Cisco hostname
+     hosts: cisco_devices
+     gather_facts: no
+     connection: network_cli
+     tasks:
+       - name: Gather Cisco device information
+         cisco.ios.ios_facts:
+           gather_subset: all
+         register: device_info
+
+       - name: Display hostname
+         debug:
+           msg: "Hostname: {{ device_info.ansible_facts.hostname }}"
+
+       - name: Set hostname in banner (example)
+         ios_config:
+           lines:
+             - banner motd "Welcome to {{ device_info.ansible_facts.hostname }}"
+           parents: "banner motd"
+         when: device_info.ansible_facts.hostname is defined
+
+       - name: Create a file with hostname (example)
+         copy:
+           content: "This is a file for {{ device_info.ansible_facts.hostname }}"
+           dest: "/tmp/{{ device_info.ansible_facts.hostname }}.txt"
+         when: device_info.ansible_facts.hostname is defined
