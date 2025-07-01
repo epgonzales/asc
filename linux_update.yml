@@ -3,5 +3,5 @@
   tasks:
     # 1. Accept repository changes explicitly
     - name: Accept repository changes explicitly
-      shell: apt-get update --allow-releaseinfo-change
+      shell: apt update #--allow-releaseinfo-change
       ignore_errors: yes
