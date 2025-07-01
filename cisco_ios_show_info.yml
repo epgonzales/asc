@@ -1,7 +1,7 @@
 - name: Gather Cisco IOS Version Information
   hosts: all
   gather_facts: false
-  ansible_connection: ansible.netcommon.network_cli
+  connection: ansible.netcommon.network_cli
   vars:
     ansible_network_os: ios
   tasks:
