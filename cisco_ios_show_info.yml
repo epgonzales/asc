@@ -1,6 +1,5 @@
-   ---
    - name: Get and use Cisco hostname
-     hosts: cisco_devices
+     hosts: all
      gather_facts: no
      connection: network_cli
      tasks:
