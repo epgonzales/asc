@@ -3,7 +3,7 @@
   gather_facts: false
   connection: ansible.netcommon.network_cli
   vars:
-    ansible_network_os: ios
+    ansible_network_os: cisco.ios.ios
   tasks:
     - name: Execute show version command
       cisco.ios.ios_command:
