@@ -83,48 +83,6 @@
           
           ===============================================
 
-    - name: Save device information to file
-      copy:
-        content: |
-          Device Information Report
-          Generated: {{ ansible_date_time.iso8601_basic_short }}
-          ===============================================
-          
-          Device: {{ inventory_hostname }}
-          IP Address: {{ ansible_host }}
-          Device Type: {{ device_type | default('Unknown') }}
-          Role: {{ device_role | default('Unknown') }}
-          Site: {{ site | default('Unknown') }}
-          
-          HOSTNAME:
-          {{ hostname_output.stdout[0] }}
-          
-          UPTIME:
-          {{ uptime_output.stdout[0] }}
-          
-          VERSION INFORMATION:
-          {{ version_output.stdout[0] }}
-          
-          SYSTEM FACTS:
-          Software Version: {{ device_facts.ansible_facts.ansible_net_version }}
-          Hardware Model: {{ device_facts.ansible_facts.ansible_net_model }}
-          Serial Number: {{ device_facts.ansible_facts.ansible_net_serialnum }}
-          System Image: {{ device_facts.ansible_facts.ansible_net_image }}
-          
-          MEMORY INFORMATION:
-          Total Memory: {{ device_facts.ansible_facts.ansible_net_memtotal_mb }} MB
-          Free Memory: {{ device_facts.ansible_facts.ansible_net_memfree_mb }} MB
-          
-          INTERFACE STATUS:
-          {{ interface_output.stdout[0] }}
-          
-          CONFIGURATION SUMMARY:
-          {{ config_summary.stdout[0] }}
-          
-          ===============================================
-        dest: "{{ output_dir }}/{{ inventory_hostname }}_info_{{ timestamp }}.txt"
-      delegate_to: localhost
-
     - name: Create summary report
       copy:
         content: |
