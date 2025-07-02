@@ -33,12 +33,6 @@
           - show version | include uptime
       register: uptime_output
 
-    - name: Get interface status
-      cisco.ios.ios_command:
-        commands:
-          - show ip interface brief
-      register: interface_output
-
     - name: Get running configuration summary
       cisco.ios.ios_command:
         commands:
