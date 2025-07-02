@@ -8,6 +8,8 @@
   vars:
     output_dir: "./device_reports"
     timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+    ansible_network_os: ios
+    device_type: cisco_ios
   
   tasks:
     - name: Check device connectivity and response time
