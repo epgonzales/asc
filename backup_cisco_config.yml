@@ -21,7 +21,7 @@
       
     - name: Ensure local backup directory exists
       file:
-        path: "/home/semaphore"
+        path: "/home/semaphore/backups"
         state: directory
         mode: '0755'
       delegate_to: localhost
@@ -31,7 +31,7 @@
     - name: Save running configuration to file
       copy:
         content: "{{ config_output.stdout[0] }}"
-        dest: "/home/semaphore/{{ inventory_hostname }}_{{ backup_time }}.txt"
+        dest: "/home/semaphore/backups/{{ inventory_hostname }}_{{ backup_time }}.txt"
       delegate_to: localhost
       run_once: false
       tags: backup
