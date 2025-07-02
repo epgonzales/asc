@@ -1,7 +1,14 @@
+---
+
 - name: Gather Cisco IOS Version Information
   hosts: all
   gather_facts: false
   connection: network_cli
+
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
+
   tasks:
     - name: Execute show version command
       cisco.ios.ios_command:
