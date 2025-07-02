@@ -6,7 +6,7 @@
   
   vars:
     output_dir: "/tmp/semaphore"
-    timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+    timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
     ansible_network_os: ios
     device_type: cisco_ios
   
@@ -87,7 +87,7 @@
       copy:
         content: |
           Device Information Report
-          Generated: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+          Generated: {{ ansible_date_time.iso8601_basic_short }}
           ===============================================
           
           Device: {{ inventory_hostname }}
