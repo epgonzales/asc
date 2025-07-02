@@ -1,8 +1,9 @@
-- hosts: all
-  gather_facts: false
-  connection: network_cli #ansible.netcommon.network_cli
-
-  tasks:
-    - name: Run cli_command on Cisco IOS and display results
-      cisco.ios.ios_ping:
-        dest: 10.50.1.4
+---
+- name: Gather Cisco IOS Device Information
+  hosts: cisco_switches
+  gather_facts: no
+  connection: network_cli
+  
+  vars:
+    output_dir: "./device_reports"
+    timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
