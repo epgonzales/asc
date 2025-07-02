@@ -2,7 +2,11 @@
 - name: Backup Cisco Switch Configuration
   hosts: all  # Or target specific hosts from your inventory
   gather_facts: false  # Disable fact gathering for faster execution
- 
+
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
+    
   tasks:
     - name: Get running configuration
       cisco.ios.ios_config:
