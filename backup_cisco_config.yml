@@ -18,6 +18,15 @@
         commands: show running-config
       register: config_output
       tags: backup
+      
+    - name: Ensure local backup directory exists
+      file:
+        path: "/tmp/semaphore/backups"
+        state: directory
+        mode: '0755'
+      delegate_to: localhost
+      run_once: true
+      tags: backup
 
     - name: Save running configuration to file
       copy:
