@@ -16,30 +16,3 @@
         count: 3
       register: ping_result
       ignore_errors: yes
-
-    #- name: Get routing table
-      #cisco.ios.ios_command:
-        #commands:
-          #- show ip route summary
-      #register: route_summary
-      #ignore_errors: yes
-
-    - name: Get VLAN information (for switches)
-      cisco.ios.ios_command:
-        commands:
-          - show vlan brief
-      register: vlan_info
-      ignore_errors: yes
-      when: device_role == "switch"
-
-    - name: Display connectivity status
-      debug:
-        msg: |
-          Device: {{ inventory_hostname }}
-          Ping to 8.8.8.8: {{ 'SUCCESS' if ping_result.packets_tx == ping_result.packets_rx else 'FAILED' }}
-          {% if ping_result.packets_tx == ping_result.packets_rx %}
-          Packet Loss: 0%
-          {% else %}
-          Packet Loss: {{ ((ping_result.packets_tx - ping_result.packets_rx) / ping_result.packets_tx * 100) | round(2) }}%
-          {% endif %}
-      when: ping_result is defined
