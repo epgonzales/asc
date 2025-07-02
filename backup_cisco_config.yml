@@ -19,5 +19,5 @@
     - name: Save running configuration to a file
       copy:
         content: "{{ config_output.running_config }}"
-        dest: "/tmp/semaphore/{{ inventory_hostname }}_{{ ansible_date_time.date }}.txt"
+        dest: "/tmp/semaphore/backups/{{ inventory_hostname }}_{{ ansible_date_time.date }}.txt"
       tags: backup
