@@ -87,7 +87,7 @@
       copy:
         content: |
           CISCO DEVICES SUMMARY REPORT
-          Generated: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+          #Generated: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
           ===============================================
           
           {% for host in groups['cisco_devices'] %}
