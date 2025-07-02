@@ -1,7 +1,7 @@
 ---
    
 - name: Additional Network Diagnostics
-  hosts: cisco_switches
+  hosts: hq_switches
   gather_facts: no
   connection: network_cli
   
