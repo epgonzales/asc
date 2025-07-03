@@ -1,4 +1,16 @@
 ---
+- hosts: all
+  gather_facts: no
+
+  tasks:
+  - name: Run show version on remote devices
+    cisco.ios.ios_command:
+      commands: show version
+
+
+
+
+---
 - name: Cisco Nexus Switch
   hosts: nexus
   gather_facts: no
