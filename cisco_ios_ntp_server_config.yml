@@ -6,6 +6,8 @@
 
   vars:
     ntp_server: "10.50.1.211"
+    ansible_network_os: ios
+    device_type: cisco_ios
 
   tasks:
     - name: Configure NTP server
