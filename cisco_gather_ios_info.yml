@@ -21,11 +21,11 @@
           - show version
       register: version_output
 
-#    - name: Get hostname
-#      cisco.ios.ios_command:
-#        commands:
-#          - show running-config | include hostname
-#      register: hostname_output
+    - name: Get hostname
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include hostname
+      register: hostname_output
 
     - name: Get uptime information
       cisco.ios.ios_command:
