@@ -49,8 +49,8 @@
           Site: {{ site | default('Unknown') }}
           ===============================================
           
-#          HOSTNAME:
-#          {{ hostname_output.stdout[0] }}
+          HOSTNAME:
+          {{ hostname_output.stdout[0] }}
           
           UPTIME:
           {{ uptime_output.stdout[0] }}
