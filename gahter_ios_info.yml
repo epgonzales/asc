@@ -1,0 +1,105 @@
+---
+- name: Gather Cisco IOS Device Information
+  hosts: hq_switches
+  gather_facts: no
+  connection: network_cli
+  
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
+    csv_file: "cisco_devices_report_{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.csv"
+  
+  tasks:
+    - name: Setup facts
+      setup:
+      delegate_to: localhost
+      run_once: true
+
+    - name: Create CSV header
+      lineinfile:
+        path: "{{ csv_file }}"
+        line: "Device,IP_Address,Device_Type,Site,Hostname,Software_Version,Model,Serial_Number,Image,Total_Memory_MB,Free_Memory_MB,Uptime"
+        create: yes
+        state: present
+      delegate_to: localhost
+      run_once: true
+
+    - name: Gather device facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - all
+      register: device_facts
+
+    - name: Get show version output
+      cisco.ios.ios_command:
+        commands:
+          - show version
+      register: version_output
+
+    - name: Get hostname
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include hostname
+      register: hostname_output
+
+    - name: Get uptime information
+      cisco.ios.ios_command:
+        commands:
+          - show version | include uptime
+      register: uptime_output
+
+    - name: Get running configuration summary
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include (interface|ip|router)
+      register: config_summary
+
+    - name: Extract hostname from output
+      set_fact:
+        clean_hostname: "{{ hostname_output.stdout[0] | regex_replace('hostname ', '') | trim }}"
+
+    - name: Extract uptime from output
+      set_fact:
+        clean_uptime: "{{ uptime_output.stdout[0] | regex_replace('.*uptime is ', '') | trim }}"
+
+    - name: Display device information
+      debug:
+        msg: |
+          ===============================================
+          Device: {{ inventory_hostname }}
+          IP Address: {{ ansible_host }}
+          Device Type: {{ device_type | default('Unknown') }}
+          Site: {{ site | default('Unknown') }}
+          ===============================================
+          
+          HOSTNAME:
+          {{ hostname_output.stdout[0] }}
+          
+          UPTIME:
+          {{ uptime_output.stdout[0] }}
+          
+          VERSION INFO:
+          Software: {{ device_facts.ansible_facts.ansible_net_version }}
+          Model: {{ device_facts.ansible_facts.ansible_net_model }}
+          Serial: {{ device_facts.ansible_facts.ansible_net_serialnum }}
+          Image: {{ device_facts.ansible_facts.ansible_net_image }}
+          
+          MEMORY INFO:
+          Total Memory: {{ device_facts.ansible_facts.ansible_net_memtotal_mb }} MB
+          Free Memory: {{ device_facts.ansible_facts.ansible_net_memfree_mb }} MB
+          
+          ===============================================
+
+    - name: Append device data to CSV
+      lineinfile:
+        path: "{{ csv_file }}"
+        line: "{{ inventory_hostname }},{{ ansible_host }},{{ device_type | default('Unknown') }},{{ site | default('Unknown') }},{{ clean_hostname | default('Unknown') }},{{ device_facts.ansible_facts.ansible_net_version | default('Unknown') }},{{ device_facts.ansible_facts.ansible_net_model | default('Unknown') }},{{ device_facts.ansible_facts.ansible_net_serialnum | default('Unknown') }},{{ device_facts.ansible_facts.ansible_net_image | default('Unknown') }},{{ device_facts.ansible_facts.ansible_net_memtotal_mb | default('0') }},{{ device_facts.ansible_facts.ansible_net_memfree_mb | default('0') }},\"{{ clean_uptime | default('Unknown') }}\""
+        create: yes
+        state: present
+      delegate_to: localhost
+
+    - name: Display CSV file location
+      debug:
+        msg: "Device information has been saved to: {{ csv_file }}"
+      run_once: true
+      delegate_to: localhost
