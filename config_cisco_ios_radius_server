@@ -1,0 +1,27 @@
+! Configure RADIUS server
+radius server RADIUS-SERVER
+ address ipv4 192.168.100.10 auth-port 1812 acct-port 1813
+ key MySecretKey123
+ timeout 5
+ retransmit 3
+
+! Enable AAA
+aaa new-model
+
+! Configure authentication methods
+aaa authentication login default group radius local
+aaa authentication enable default group radius enable
+
+! Configure authorization
+aaa authorization exec default group radius local
+aaa authorization commands 15 default group radius local
+
+! Configure accounting
+aaa accounting exec default start-stop group radius
+aaa accounting commands 15 default start-stop group radius
+
+! Apply to VTY lines
+line vty 0 15
+ login authentication default
+ authorization exec default
+ accounting exec default
