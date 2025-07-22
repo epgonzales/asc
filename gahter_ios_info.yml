@@ -7,7 +7,7 @@
   vars:
     ansible_network_os: ios
     device_type: cisco_ios
-    csv_file: "cisco_devices_report_{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.csv"
+    csv_file: "/home/semaphore/cisco_devices_report_{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.csv"
   
   tasks:
     - name: Setup facts
