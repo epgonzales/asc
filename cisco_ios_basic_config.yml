@@ -12,7 +12,7 @@
     - name: Initial Configuration
       cisco.ios.ios_config:
         lines:
-          - "hostname switch-02" #change [HOSTNAME]
+          - "hostname switch-03" #change [HOSTNAME]
           - "service password-encryption"
           - "no ip http server"
           - "no ip http secure-server"
