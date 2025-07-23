@@ -1,0 +1,32 @@
+---
+- name: Configure Cisco IOS Device
+  hosts: all  # Replace with your inventory group name
+  gather_facts: false
+  connection: network_cli
+
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
+
+  tasks:
+    - name: Initial Configuration
+      cisco.ios.ios_config:
+        lines:
+          - "hostname switch-02" #change [HOSTNAME]
+          - "service password-encryption"
+          - "no ip http server"
+          - "no ip http secure-server"
+          - "ip http authentication local"
+          - "enable secret cisco" #change [PASSWORD]
+          - "snmp-server community asc RO"
+          - "snmp-server contact netadmin 0512345678"
+          - "snmp-server enable traps"
+          - "line vty 0 4"
+          - "session-timeout 1"
+          - "exec-timeout 3 0"
+          - "logging synchronous"
+          - "login local"
+          - "transport input ssh"
+          - "ntp server 10.50.1.209"
+          - "ntp server 10.50.1.210"
+      tags: basic config
