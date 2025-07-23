@@ -1,6 +1,5 @@
 ---
-- name: Backup Cisco Switch Configuration
-  hosts: hq_switches
+- name: Backup Cisco IOS Devices
   gather_facts: false
   connection: network_cli
 
