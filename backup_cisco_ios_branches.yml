@@ -1,6 +1,6 @@
 ---
 - name: Backup Cisco IOS Devices
-  hosts: branch_devices
+  hosts: all
   gather_facts: false
   connection: network_cli
 
