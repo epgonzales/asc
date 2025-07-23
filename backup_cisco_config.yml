@@ -31,7 +31,7 @@
     - name: Save running configuration to file
       copy:
         content: "{{ config_output.stdout[0] }}"
-        dest: "/home/semaphore/{{ inventory_hostname }}_{{ backup_time }}.txt"
+        dest: "/home/semaphore/backups/branches/{{ inventory_hostname }}_{{ backup_time }}.txt"
       delegate_to: localhost
       run_once: false
       tags: backup
