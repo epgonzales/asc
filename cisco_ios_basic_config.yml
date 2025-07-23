@@ -12,15 +12,16 @@
     - name: Initial Configuration
       cisco.ios.ios_config:
         lines:
-          - "hostname switch-03" #change [HOSTNAME]
           - "service password-encryption"
           - "no ip http server"
           - "no ip http secure-server"
           - "ip http authentication local"
-          - "enable secret cisco" #change [PASSWORD]
-          - "snmp-server community asc RO"
-          - "snmp-server contact netadmin 0512345678"
+          - "snmp-server view viewer iso included"
+          - "snmp-server group grp1 v3 priv read ascview write ascview notify viewer"
+          - "snmp-server user admin GRP1 v3 auth sha authadmin priv aes 128 privadmin"
+          - "snmp-server host 10.50.40.6 version 3 priv admin"
           - "snmp-server enable traps"
+          
           - "ntp server 10.1.1.9"
           - "ntp server 10.1.1.10"
       tags: basic config
