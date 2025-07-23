@@ -1,6 +1,6 @@
 ---
-- name: Backup Cisco Switch Configuration
-  hosts: all
+- name: Backup Cisco Devices
+  hosts: branch_devices
   gather_facts: false
   connection: network_cli
 
