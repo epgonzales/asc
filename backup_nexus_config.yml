@@ -1,5 +1,5 @@
 ---
-- name: Backup Cisco Switch Configuration
+- name: Backup Cisco Nexus Devices
   hosts: all
   gather_facts: false
   connection: network_cli
