@@ -17,7 +17,7 @@
           - "no ip http secure-server"
           - "ip http authentication local"
           - "snmp-server view viewer iso included"
-          - "snmp-server group grp1 v3 priv read ascview write ascview notify viewer"
+          - "snmp-server group grp1 v3 priv read viewer write viewer notify viewer"
           - "snmp-server user admin GRP1 v3 auth sha authadmin priv aes 128 privadmin"
           - "snmp-server host 10.50.40.6 version 3 priv admin"
           - "snmp-server enable traps"
