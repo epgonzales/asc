@@ -5,7 +5,7 @@
   connection: network_cli
 
   vars:
-    #ntp_server: "10.50.1.211"
+    ntp_server: "10.1.1.200"
     ansible_network_os: ios
     device_type: cisco_ios
 
