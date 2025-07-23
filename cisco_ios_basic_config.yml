@@ -21,7 +21,6 @@
           - "snmp-server community asc RO"
           - "snmp-server contact netadmin 0512345678"
           - "snmp-server enable traps"
-          - "transport input ssh"
           - "ntp server 10.1.1.9"
           - "ntp server 10.1.1.10"
       tags: basic config
