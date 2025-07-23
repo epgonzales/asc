@@ -1,6 +1,6 @@
 ---
 - name: Gather Cisco IOS Device Information
-  hosts: hq_switches
+  hosts: all
   gather_facts: no
   connection: network_cli
   
