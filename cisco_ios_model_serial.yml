@@ -1,0 +1,19 @@
+---
+- name: Get Cisco IOS device facts
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+    - name: Collect IOS facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - all
+      register: device_info
+
+    - name: Display model and serial number
+      debug:
+        msg: |
+          Device: {{ inventory_hostname }}
+          Model: {{ device_info.ansible_facts.ansible_net_model }}
+          Serial Number: {{ device_info.ansible_facts.ansible_net_serialnum }}
