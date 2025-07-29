@@ -21,4 +21,3 @@
           Device: {{ inventory_hostname }}
           Model: {{ device_info.ansible_facts.ansible_net_model }}
           Serial Number: {{ device_info.ansible_facts.ansible_net_serialnum }}
-          IP Address: {{ device_info.ansible_net_all_ipv4_addresses}}
