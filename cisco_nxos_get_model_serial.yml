@@ -1,5 +1,5 @@
 ---
-- name: Get Cisco IOS device facts
+- name: Get Cisco NXOS device facts
   hosts: all
   gather_facts: no
   connection: network_cli
@@ -9,8 +9,8 @@
     device_type: cisco_nxos
     
   tasks:
-    - name: Collect IOS facts
-      cisco.ios.ios_facts:
+    - name: Collect NXOS facts
+      cisco.nxos.nxos_facts:
         gather_subset:
           - all
       register: device_info
