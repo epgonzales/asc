@@ -4,6 +4,10 @@
   gather_facts: no
   connection: network_cli
 
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
+    
   tasks:
     - name: Collect IOS facts
       cisco.ios.ios_facts:
