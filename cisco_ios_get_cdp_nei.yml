@@ -1,0 +1,20 @@
+---
+- name: Gather Cisco IOS CDP Neighbors
+  hosts: routers
+  gather_facts: no
+  connection: network_cli
+  
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
+  
+  tasks:
+    - name: Run cli_command on Cisco IOS and display results
+      cisco.ios.ios_command:
+        commands:
+          - show cdp neighbors
+      register: cdp_output
+
+    - name: Display the output
+      debug:
+        var: cdp_output.stdout_lines
