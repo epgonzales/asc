@@ -1,6 +1,12 @@
-- hosts: ios
-  gather_facts: false
-  connection: ansible.netcommon.network_cli
+---
+- name: Gather Cisco IOS Interface IP
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+  
+  vars:
+    ansible_network_os: ios
+    device_type: cisco_ios
 
   tasks:
     - name: Run cli_command on Cisco IOS and display results
