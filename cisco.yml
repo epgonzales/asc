@@ -1,6 +1,6 @@
 ---
 - name: Gather Cisco IOS Interface IP
-  hosts: all
+  hosts: routers
   gather_facts: no
   connection: network_cli
   
