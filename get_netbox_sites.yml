@@ -1,0 +1,24 @@
+---
+- name: Get all NetBox sites
+  hosts: localhost
+  gather_facts: false
+  vars:
+    netbox_url: "http://netbox.example.com/api/dcim/sites/"
+    netbox_token: "YOUR_NETBOX_API_TOKEN"
+
+  tasks:
+    - name: Query all sites from NetBox
+      uri:
+        url: "{{ netbox_url }}"
+        method: GET
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Content-Type: "application/json"
+        return_content: yes
+        validate_certs: no
+      register: netbox_sites
+
+    - name: Show site info
+      debug:
+        msg: "{{ item.name }} (Slug: {{ item.slug }})"
+      loop: "{{ (netbox_sites.json.results | default([])) }}"
