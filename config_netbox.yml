@@ -1,7 +1,3 @@
-netbox_url: "http://netbox.example.com"
-netbox_token: "YOUR_NETBOX_API_TOKEN"
-validate_certs: false
-
 ---
 - name: Manage NetBox objects
   hosts: localhost
