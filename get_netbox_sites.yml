@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    netbox_url: http://10.50.40.7:8000
+    netbox_url: http://10.50.40.7:8000/api/dcim/sites/
     netbox_token: 1eed18a2573048c183a2acddf49e9f3494a594d8
     validate_certs: false
     ansible_python_interpreter: /usr/bin/python3
