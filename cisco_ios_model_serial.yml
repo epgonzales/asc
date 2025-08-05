@@ -19,7 +19,6 @@
       debug:
         msg: |
           Device: {{ inventory_hostname }}
-          Site_ID: {{ site_id | default('Unknown') }}
           Model: {{ device_info.ansible_facts.ansible_net_model }}
           Software: {{ device_info.ansible_facts.ansible_net_version }}
           Serial Number: {{ device_info.ansible_facts.ansible_net_serialnum }}
