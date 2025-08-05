@@ -46,7 +46,7 @@
           Device: {{ inventory_hostname }}
           IP Address: {{ ansible_host }}
           Device Type: {{ device_type | default('Unknown') }}
-          Site: {{ site | default('Unknown') }}
+          Site_ID: {{ site_id | default('Unknown') }}
           ===============================================
           
           HOSTNAME:
