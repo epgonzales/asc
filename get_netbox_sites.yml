@@ -20,7 +20,10 @@
         validate_certs: no
       register: netbox_sites
 
-    - name: Show site info
+    - name: Display NetBox site details in readable format
       debug:
-        msg: "{{ item.name }} (Slug: {{ item.slug }})"
-      loop: "{{ (netbox_sites.json.results | default([])) }}"
+        msg: |
+          Site Name: {{ item.name }}
+          Slug     : {{ item.slug }}
+          Status   : {{ item.status.label if item.status is defined and item.status.label is defined else 'N/A' }}
+      loop: "{{ netbox_response.json.results }}"
