@@ -24,28 +24,15 @@
           Software: {{ device_info.ansible_facts.ansible_net_version }}
           Serial Number: {{ device_info.ansible_facts.ansible_net_serialnum }}
 
-    - name: Create export directory if it doesn't exist
-      file:
-        path: "{{ export_path }}"
-        state: directory
-        mode: '0755'
-      delegate_to: localhost
-      run_once: true
-
-    - name: Export device information to CSV file
-      lineinfile:
-        path: "{{ export_path }}/cisco_device_inventory.csv"
-        line: "{{ inventory_hostname }},{{ device_info.ansible_facts.ansible_net_model }},{{ device_info.ansible_facts.ansible_net_version }},{{ device_info.ansible_facts.ansible_net_serialnum }}"
-        create: yes
+    - name: Export detailed device information to JSON file
+      copy:
+        content: |
+          {
+            "hostname": "{{ inventory_hostname }}",
+            "model": "{{ device_info.ansible_facts.ansible_net_model }}",
+            "software_version": "{{ device_info.ansible_facts.ansible_net_version }}",
+            "serial_number": "{{ device_info.ansible_facts.ansible_net_serialnum }}",
+          }
+        dest: "{{ export_path }}/{{ inventory_hostname }}_device_info.json"
         mode: '0644'
       delegate_to: localhost
-
-    - name: Create CSV header (run once)
-      lineinfile:
-        path: "{{ export_path }}/cisco_device_inventory.csv"
-        line: "Hostname,Model,Software Version,Serial Number"
-        insertbefore: BOF
-        create: yes
-        mode: '0644'
-      delegate_to: localhost
-      run_once: true
