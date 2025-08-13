@@ -24,15 +24,21 @@
           Software: {{ device_info.ansible_facts.ansible_net_version }}
           Serial Number: {{ device_info.ansible_facts.ansible_net_serialnum }}
 
-    - name: Export detailed device information to JSON file
-      copy:
-        content: |
-          {
-            "hostname": "{{ inventory_hostname }}",
-            "model": "{{ device_info.ansible_facts.ansible_net_model }}",
-            "software_version": "{{ device_info.ansible_facts.ansible_net_version }}",
-            "serial_number": "{{ device_info.ansible_facts.ansible_net_serialnum }}",
-          }
-        dest: "{{ export_path }}/{{ inventory_hostname }}_device_info.json"
+    - name: Create summary report
+      template:
+        dest: "{{ export_path }}/inventory_summary.txt"
         mode: '0644'
+        content: |
+          Cisco Device Inventory Report
+          ============================
+          Generated on: {{ ansible_date_time.iso8601 }}
+          
+          {% for host in groups['all'] %}
+          Device: {{ host }}
+          Model: {{ hostvars[host]['device_info']['ansible_facts']['ansible_net_model'] | default('N/A') }}
+          Software: {{ hostvars[host]['device_info']['ansible_facts']['ansible_net_version'] | default('N/A') }}
+          Serial: {{ hostvars[host]['device_info']['ansible_facts']['ansible_net_serialnum'] | default('N/A') }}
+          ---
+          {% endfor %}
       delegate_to: localhost
+      run_once: true
