@@ -1,0 +1,2 @@
+[fortigates]
+fortigate01 ansible_host=192.168.0.99 ansible_user=admin ansible_password=yourpassword ansible_httpapi_use_ssl=True ansible_httpapi_validate_certs=False ansible_network_os=fortinet.fortios.fortios ansible_connection=httpapi
