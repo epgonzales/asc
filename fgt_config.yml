@@ -1,0 +1,35 @@
+---
+- name: Configure static route and address in FortiGate
+  hosts: fortigates
+  connection: httpapi
+  gather_facts: no
+
+  vars:
+    vdom: "root"
+    static_route:
+      dst: "10.10.10.0 255.255.255.0"
+      gateway: "192.168.1.1"
+      device: "port1"
+    address_object:
+      name: "Subnet_10.10.10.0_24"
+      subnet: "10.10.10.0 255.255.255.0"
+
+  tasks:
+
+    - name: Add static route
+      fortinet.fortios.fortios_router_static:
+        vdom: "{{ vdom }}"
+        state: "present"
+        router_static:
+          dst: "{{ static_route.dst }}"
+          gateway: "{{ static_route.gateway }}"
+          device: "{{ static_route.device }}"
+
+    - name: Add address object for subnet
+      fortinet.fortios.fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: "present"
+        firewall_address:
+          name: "{{ address_object.name }}"
+          subnet: "{{ address_object.subnet }}"
+          type: "subnet"
